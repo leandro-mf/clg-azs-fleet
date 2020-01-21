@@ -1,7 +1,6 @@
 package br.com.azship.clgazsfleet.service.impl;
 
 import java.util.List;
-
 import org.springframework.stereotype.Service;
 
 import br.com.azship.clgazsfleet.model.Motorista;
@@ -12,34 +11,45 @@ import br.com.azship.clgazsfleet.service.MotoristaService;
 public class MotoristaServiceImpl implements MotoristaService {
 
 	private final MotoristaRepository motoristaRepository;
-	
+
 	public MotoristaServiceImpl(MotoristaRepository motoristaRepository) {
 		this.motoristaRepository = motoristaRepository;
 	}
-	
-	@Override
-	public Motorista findMotoristaById(Long id) {
-		return motoristaRepository.findById(id).get();
-	}
 
 	@Override
-	public List<Motorista> findAllMotoristas() {
+	public List<Motorista> findAll() {
 		return motoristaRepository.findAll();
 	}
 
 	@Override
-	public Motorista saveMotorista(Motorista motorista) {
+	public Motorista findById(Long id) {
+		Motorista motorista = motoristaRepository.findById(id).get();
+		return motorista;
+	}
+
+	@Override
+	public Motorista findByNome(String nome) {
+		return motoristaRepository.findByNome(nome);
+	}
+
+	@Override
+	public Motorista findByCpf(String cpf) {
+		return motoristaRepository.findByCpf(cpf);
+	}
+
+	@Override
+	public Motorista save(Motorista motorista) {
 		return motoristaRepository.save(motorista);
 	}
 
 	@Override
-	public void deleteMotorista(Long id) {
+	public Motorista update(Motorista motorista) {
+		return motoristaRepository.save(motorista);
+	}
+
+	@Override
+	public void delete(Long id) {
 		motoristaRepository.deleteById(id);
-	}
-
-	@Override
-	public Motorista updateMotorista(Motorista motorista) {
-		return motoristaRepository.save(motorista);
 	}
 
 }

@@ -2,24 +2,38 @@ package br.com.azship.clgazsfleet.model;
 
 import java.time.LocalDate;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
 
 @Entity
+@Table(name = "motorista")
+@SequenceGenerator(name = "motorista_id_gen", sequenceName = "motorista_id_seq", initialValue = 1, allocationSize = 1)
 public class Motorista {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "motorista_id_gen")
+	@Column(name = "id")
 	private Long id;
+	@Column(name = "nome")
 	private String nome;
+	@Column(name = "cpf")
 	private String cpf;
+	@Column(name = "data_nascimento", columnDefinition = "DATE")
 	private LocalDate dataNascimento;
+	@Column(name = "sexo")
 	private Sexo sexo;
+	@Column(name = "categoria_cnh")
 	private CategoriaCnh categoriaCnh;
+	@Column(name = "numero_cnh")
 	private String numeroCnh;
+	@Column(name = "expedicao_cnh", columnDefinition = "DATE")
 	private LocalDate expedicaoCnh;
+	@Column(name = "validade_cnh", columnDefinition = "DATE")
 	private LocalDate validadeCnh;
 
 	public Motorista() {
@@ -96,6 +110,31 @@ public class Motorista {
 
 	public void setValidadeCnh(LocalDate validadeCnh) {
 		this.validadeCnh = validadeCnh;
+	}
+
+	@Override
+	public String toString() {
+		StringBuilder builder = new StringBuilder();
+		builder.append("Motorista [id=");
+		builder.append(id);
+		builder.append(", nome=");
+		builder.append(nome);
+		builder.append(", cpf=");
+		builder.append(cpf);
+		builder.append(", dataNascimento=");
+		builder.append(dataNascimento);
+		builder.append(", sexo=");
+		builder.append(sexo);
+		builder.append(", categoriaCnh=");
+		builder.append(categoriaCnh);
+		builder.append(", numeroCnh=");
+		builder.append(numeroCnh);
+		builder.append(", expedicaoCnh=");
+		builder.append(expedicaoCnh);
+		builder.append(", validadeCnh=");
+		builder.append(validadeCnh);
+		builder.append("]");
+		return builder.toString();
 	}
 
 }

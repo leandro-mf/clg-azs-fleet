@@ -1,6 +1,12 @@
 package br.com.azship.clgazsfleet.bootstrap;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Random;
 
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
@@ -8,6 +14,7 @@ import org.springframework.stereotype.Component;
 import br.com.azship.clgazsfleet.model.CategoriaCnh;
 import br.com.azship.clgazsfleet.model.Motorista;
 import br.com.azship.clgazsfleet.model.Sexo;
+import br.com.azship.clgazsfleet.model.StatusViagem;
 import br.com.azship.clgazsfleet.model.TipoVeiculo;
 import br.com.azship.clgazsfleet.model.Veiculo;
 import br.com.azship.clgazsfleet.model.Viagem;
@@ -33,80 +40,58 @@ public class BootStrapData implements CommandLineRunner {
 	public void run(String... args) throws Exception {
 		System.out.println("Carregando dados...");
 
-		Motorista motorista1 = new Motorista();
-		Motorista motorista2 = new Motorista();
+		List<Motorista> motoristas = new ArrayList<Motorista>();
+		List<Veiculo> veiculos = new ArrayList<Veiculo>();
+		List<Viagem> viagens = new ArrayList<Viagem>();
 
-		motorista1.setNome("Joao");
-		motorista1.setCpf("752.583.470-95");
-		motorista1.setDataNascimento(LocalDate.of(1995, 1, 1));
-		motorista1.setSexo(Sexo.MASCULINO);
-		motorista1.setCategoriaCnh(CategoriaCnh.C);
-		motorista1.setNumeroCnh("111111111");
-		motorista1.setExpedicaoCnh(LocalDate.of(2016, 5, 1));
-		motorista1.setValidadeCnh(LocalDate.of(2020, 5, 1));
+		for (int i = 0; i < 10; i++) {
+			Motorista motorista = new Motorista();
+			Veiculo veiculo = new Veiculo();
+			Viagem viagem = new Viagem();
 
-		motorista2.setNome("Maria");
-		motorista2.setCpf("628.497.030-79");
-		motorista2.setDataNascimento(LocalDate.of(1990, 1, 1));
-		motorista2.setSexo(Sexo.FEMININO);
-		motorista2.setCategoriaCnh(CategoriaCnh.D);
-		motorista2.setNumeroCnh("222222222");
-		motorista2.setExpedicaoCnh(LocalDate.of(2017, 10, 1));
-		motorista2.setValidadeCnh(LocalDate.of(2021, 10, 1));
+			String iString = String.valueOf(i);
 
-		motoristaRepository.save(motorista1);
-		motoristaRepository.save(motorista2);
+			motorista.setNome("Motorista " + (i + 1));
+			motorista.setCpf(String.join("", Collections.nCopies(11, iString)));
+			motorista.setDataNascimento(LocalDate.of(1995, 1, i + 1));
+			motorista.setSexo(Sexo.getInstance(new Random().nextInt(2)));
+			motorista.setCategoriaCnh(CategoriaCnh.getInstance(new Random().nextInt(3)));
+			motorista.setNumeroCnh(String.join("", Collections.nCopies(11, iString)));
+			motorista.setExpedicaoCnh(LocalDate.of(2016, 5, i + 1));
+			motorista.setValidadeCnh(LocalDate.of(2020, 5, i + 1));
+
+			motoristas.add(motorista);
+
+			veiculo.setPlaca("AAA" + String.join("", Collections.nCopies(4, iString)));
+			veiculo.setCidade("Uberlandia");
+			veiculo.setEstado("MG");
+			veiculo.setRenavam("Renavam " + (i + 1));
+			veiculo.setChassi("Chassi " + (i + 1));
+			veiculo.setFabricante("Fabricante " + (i + 1));
+			veiculo.setModelo("Modelo " + (i + 1));
+			veiculo.setAnoFabricacao(LocalDate.of(2000, 1, i + 1));
+			veiculo.setTipoVeiculo(TipoVeiculo.getInstance(new Random().nextInt(7)));
+
+			veiculos.add(veiculo);
+
+			viagem.setVeiculo(veiculo);
+			viagem.setMotorista(motorista);
+			viagem.setDataInicio(LocalDate.of(2020, i + 1, i + 1));
+			viagem.setDataFim(LocalDate.of(2020, i + 1, i + 1));
+			viagem.setProdutoTransportado("Produto " + (i + 1));
+			viagem.setValorFrete(BigDecimal.valueOf(new Random().nextDouble() + new Random().nextInt(1000))
+					.setScale(2, RoundingMode.HALF_UP).doubleValue());
+			viagem.setStatusViagem(StatusViagem.CRIADA);
+
+			viagens.add(viagem);
+		}
+
+		motoristaRepository.saveAll(motoristas);
+		veiculoRepository.saveAll(veiculos);
+		viagemRepository.saveAll(viagens);
 
 		System.out.println("Motoristas carregados: " + motoristaRepository.count());
-
-		Veiculo veiculo1 = new Veiculo();
-		Veiculo veiculo2 = new Veiculo();
-
-		veiculo1.setPlaca("AAA1111");
-		veiculo1.setCidade("Uberlandia");
-		veiculo1.setEstado("MG");
-		veiculo1.setRenavam("Renavam 1");
-		veiculo1.setChassi("Chassi 1");
-		veiculo1.setFabricante("Fabricante 1");
-		veiculo1.setModelo("Modelo 1");
-		veiculo1.setAnoFabricacao(LocalDate.of(2000, 1, 1));
-		veiculo1.setTipoVeiculo(TipoVeiculo.BAU);
-
-		veiculo2.setPlaca("BBB2222");
-		veiculo2.setCidade("Sao Paulo");
-		veiculo2.setEstado("SP");
-		veiculo2.setRenavam("Renavam 2");
-		veiculo2.setChassi("Chassi 2");
-		veiculo2.setFabricante("Fabricante 2");
-		veiculo2.setModelo("Modelo 2");
-		veiculo2.setAnoFabricacao(LocalDate.of(2005, 1, 1));
-		veiculo2.setTipoVeiculo(TipoVeiculo.BAU_FRIGORIFICO);
-
-		veiculoRepository.save(veiculo1);
-		veiculoRepository.save(veiculo2);
-
 		System.out.println("Veiculos carregados: " + veiculoRepository.count());
-
-		Viagem viagem1 = new Viagem();
-		Viagem viagem2 = new Viagem();
-
-		viagem1.setVeiculo(veiculo1);
-		viagem1.setMotorista(motorista1);
-		viagem1.setDataInicio(LocalDate.of(2020, 1, 1));
-		viagem1.setDataFim(LocalDate.of(2020, 2, 1));
-		viagem1.setProdutoTransportado("Soja");
-		viagem1.setValorFrete(new Double("105.9"));
-
-		viagem2.setVeiculo(veiculo2);
-		viagem2.setMotorista(motorista2);
-		viagem2.setDataInicio(LocalDate.of(2020, 7, 5));
-		viagem2.setDataFim(LocalDate.of(2020, 8, 10));
-		viagem2.setProdutoTransportado("Boi");
-		viagem2.setValorFrete(new Double("55.9"));
-
-		viagemRepository.save(viagem1);
-		viagemRepository.save(viagem2);
-
 		System.out.println("Viagens carregadas: " + viagemRepository.count());
 	}
 

@@ -5,7 +5,10 @@ import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 
 import br.com.azship.clgazsfleet.model.Motorista;
 
-//@RepositoryRestResource(path = "teste")
 public interface MotoristaRepository extends JpaRepository<Motorista, Long> {
 
+	Motorista findByNome(String nome);
+	
+	Motorista findByCpf(String cpf);
+	
 }

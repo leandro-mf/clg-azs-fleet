@@ -1,25 +1,40 @@
 package br.com.azship.clgazsfleet.model;
 
 import java.time.LocalDate;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
 
 @Entity
+@Table(name = "veiculo")
+@SequenceGenerator(name = "veiculo_id_gen", sequenceName = "veiculo_id_seq", initialValue = 1, allocationSize = 1)
 public class Veiculo {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "veiculo_id_gen")
+	@Column(name = "id")
 	private Long id;
+	@Column(name = "placa")
 	private String placa;
+	@Column(name = "cidade")
 	private String cidade;
+	@Column(name = "estado")
 	private String estado;
+	@Column(name = "renavam")
 	private String renavam;
+	@Column(name = "chassi")
 	private String chassi;
+	@Column(name = "fabricante")
 	private String fabricante;
+	@Column(name = "modelo")
 	private String modelo;
+	@Column(name = "ano_fabricacao", columnDefinition = "DATE")
 	private LocalDate anoFabricacao;
+	@Column(name = "tipo_veiculo")
 	private TipoVeiculo tipoVeiculo;
 
 	public Veiculo() {
@@ -104,6 +119,33 @@ public class Veiculo {
 
 	public void setTipoVeiculo(TipoVeiculo tipoVeiculo) {
 		this.tipoVeiculo = tipoVeiculo;
+	}
+
+	@Override
+	public String toString() {
+		StringBuilder builder = new StringBuilder();
+		builder.append("Veiculo [id=");
+		builder.append(id);
+		builder.append(", placa=");
+		builder.append(placa);
+		builder.append(", cidade=");
+		builder.append(cidade);
+		builder.append(", estado=");
+		builder.append(estado);
+		builder.append(", renavam=");
+		builder.append(renavam);
+		builder.append(", chassi=");
+		builder.append(chassi);
+		builder.append(", fabricante=");
+		builder.append(fabricante);
+		builder.append(", modelo=");
+		builder.append(modelo);
+		builder.append(", anoFabricacao=");
+		builder.append(anoFabricacao);
+		builder.append(", tipoVeiculo=");
+		builder.append(tipoVeiculo);
+		builder.append("]");
+		return builder.toString();
 	}
 
 }

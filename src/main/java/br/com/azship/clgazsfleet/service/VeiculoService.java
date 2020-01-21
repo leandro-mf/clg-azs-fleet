@@ -6,14 +6,16 @@ import br.com.azship.clgazsfleet.model.Veiculo;
 
 public interface VeiculoService {
 	
-	List<Veiculo> findAllVeiculos();
+	List<Veiculo> findAll();
 	
-	Veiculo findVeiculoById(Long id);
+	Veiculo findById(Long id);
 	
-	Veiculo saveVeiculo(Veiculo veiculo);
+	Veiculo findByPlaca(String placa);
 	
-	void deleteVeiculo(Long id);
+	Veiculo save(Veiculo veiculo);
+		
+	Veiculo update(Veiculo veiculo);
 	
-	Veiculo updateVeiculo(Veiculo veiculo);
+	void delete(Long id);
 
 }

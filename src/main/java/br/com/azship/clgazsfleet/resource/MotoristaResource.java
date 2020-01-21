@@ -1,8 +1,13 @@
 package br.com.azship.clgazsfleet.resource;
 
+import java.net.URI;
 import java.util.List;
+import java.util.NoSuchElementException;
 
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,7 +16,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.azship.clgazsfleet.model.Motorista;
@@ -21,44 +25,53 @@ import br.com.azship.clgazsfleet.service.MotoristaService;
 @RequestMapping(MotoristaResource.BASE_URL)
 @CrossOrigin(origins = "*")
 public class MotoristaResource {
-	
+
 	public static final String BASE_URL = "/api/v1/motoristas";
-	
+
 	private final MotoristaService motoristaService;
 
 	public MotoristaResource(MotoristaService motoristaService) {
 		this.motoristaService = motoristaService;
-	}	
-	
+	}
+
 	@GetMapping
-	@ResponseStatus(code = HttpStatus.OK)
-	public List<Motorista> getAllMotoristas() {
-		return motoristaService.findAllMotoristas();
+	public ResponseEntity<List<Motorista>> get() {
+		return ResponseEntity.ok().body(motoristaService.findAll());
 	}
-	
-	@GetMapping("/{id}")
-	@ResponseStatus(code = HttpStatus.OK)
-	public Motorista getMotoristaById(@PathVariable("id") Long id) {
-		return motoristaService.findMotoristaById(id);
+
+	@GetMapping("{id}")
+	public ResponseEntity<Motorista> get(@PathVariable("id") Long id) {
+		try {
+			return ResponseEntity.ok().body(motoristaService.findById(id));
+		} catch (NoSuchElementException e) {
+			return ResponseEntity.notFound().build();
+		}
 	}
-	
+
 	@PostMapping
-	@ResponseStatus(code = HttpStatus.CREATED)
-	public Motorista saveMotorista(@RequestBody Motorista motorista) {
-		return motoristaService.saveMotorista(motorista);
+	public ResponseEntity<Motorista> post(@RequestBody Motorista motorista) {
+		Motorista savedMotorista = motoristaService.save(motorista);
+		StringBuilder sb = new StringBuilder();
+		sb.append(BASE_URL).append("/").append(savedMotorista.getId());
+		return ResponseEntity.created(URI.create(sb.toString())).body(savedMotorista);
 	}
-	
-	@DeleteMapping("/{id}")
-	@ResponseStatus(code = HttpStatus.NO_CONTENT)
-	public void deleteMotorista(@PathVariable("id") Long id) {
-		motoristaService.deleteMotorista(id);
-	}
-	
-	@PutMapping("/{id}")
-	@ResponseStatus(code = HttpStatus.OK)
-	public Motorista updateMotorista(@PathVariable("id") Long id, @RequestBody Motorista motorista) {
+
+	@PutMapping("{id}")
+	public ResponseEntity<Motorista> put(@PathVariable("id") Long id, @RequestBody Motorista motorista) {
 		motorista.setId(id);
-		return motoristaService.updateMotorista(motorista);
+		return ResponseEntity.ok().body(motoristaService.update(motorista));
 	}
-	
+
+	@DeleteMapping("{id}")
+	public ResponseEntity<Void> delete(@PathVariable("id") Long id) {
+		try {
+			motoristaService.delete(id);
+			return ResponseEntity.noContent().build();
+		} catch (EmptyResultDataAccessException e) {
+			return ResponseEntity.notFound().build();
+		} catch (DataIntegrityViolationException e) {
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+		}
+	}
+
 }

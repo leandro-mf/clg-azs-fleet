@@ -18,28 +18,33 @@ public class VeiculoServiceImpl implements VeiculoService {
 	}
 
 	@Override
-	public Veiculo findVeiculoById(Long id) {
-		return veiculoRepository.findById(id).get();
-	}
-
-	@Override
-	public List<Veiculo> findAllVeiculos() {
+	public List<Veiculo> findAll() {
 		return veiculoRepository.findAll();
 	}
 
 	@Override
-	public Veiculo saveVeiculo(Veiculo veiculo) {
+	public Veiculo findById(Long id) {
+		return veiculoRepository.findById(id).get();
+	}
+
+	@Override
+	public Veiculo findByPlaca(String placa) {
+		return veiculoRepository.findByPlaca(placa);
+	}
+
+	@Override
+	public Veiculo save(Veiculo veiculo) {
 		return veiculoRepository.save(veiculo);
 	}
 
 	@Override
-	public void deleteVeiculo(Long id) {
+	public Veiculo update(Veiculo veiculo) {
+		return veiculoRepository.save(veiculo);
+	}
+
+	@Override
+	public void delete(Long id) {
 		veiculoRepository.deleteById(id);
-	}
-
-	@Override
-	public Veiculo updateVeiculo(Veiculo veiculo) {
-		return veiculoRepository.save(veiculo);
 	}
 
 }

@@ -1,19 +1,30 @@
 package br.com.azship.clgazsfleet.service;
 
+import java.time.LocalDate;
 import java.util.List;
 
+import br.com.azship.clgazsfleet.model.Motorista;
+import br.com.azship.clgazsfleet.model.Veiculo;
 import br.com.azship.clgazsfleet.model.Viagem;
 
 public interface ViagemService {
 
-	List<Viagem> findAllViagens();
+	List<Viagem> findAll();
 	
-	Viagem findViagemById(Long id);
+	Viagem findById(Long id);
 	
-	Viagem saveViagem(Viagem viagem);
+	Viagem findByMotorista(Motorista motorista);
 	
-	void deleteViagem(Long id);
+	Viagem findByVeiculo(Veiculo veiculo);
 	
-	Viagem updateViagem(Viagem viagem);
+	Viagem findByDataInicio(LocalDate dataInicio);
+	
+	Viagem findByDataFim(LocalDate dataFim);
+	
+	Viagem save(Viagem viagem);
+	
+	Viagem update(Viagem viagem);
+	
+	void delete(Long id);
 
 }

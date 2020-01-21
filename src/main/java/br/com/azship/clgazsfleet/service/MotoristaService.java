@@ -6,14 +6,18 @@ import br.com.azship.clgazsfleet.model.Motorista;
 
 public interface MotoristaService {
 
-	List<Motorista> findAllMotoristas();
+	List<Motorista> findAll();
 	
-	Motorista findMotoristaById(Long id);
+	Motorista findById(Long id);
+	
+	Motorista findByNome(String nome);
+	
+	Motorista findByCpf(String cpf);
 		
-	Motorista saveMotorista(Motorista motorista);
+	Motorista save(Motorista motorista);
+		
+	Motorista update(Motorista motorista);
 	
-	void deleteMotorista(Long id);
-	
-	Motorista updateMotorista(Motorista motorista);
+	void delete(Long id);
 	
 }
