@@ -195,10 +195,10 @@ class Viagem extends Component {
 						</Col>
 					</Row>
 					<Row>
-						<Col>
+						<Col sm={2}>
 							<input type="text" name="search" placeholder="Data, veículo ou motorista" onChange={this.search} />
 						</Col>
-						<Col sm={{ offset: 8 }}>
+						<Col sm={{ offset: 8, sm: 2 }}>
 							<div align="right">
 								<Button variant="primary" onClick={() => this.setState({ viagem: this.emptyViagem, change: true })}>Cadastrar</Button>
 							</div>

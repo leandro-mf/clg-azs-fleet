@@ -147,10 +147,10 @@ class Veiculo extends Component {
 						</Col>
 					</Row>
 					<Row>
-						<Col>
+						<Col sm={2}>
 							<input type="text" name="search" placeholder="Placa" onChange={this.search} />
 						</Col>
-						<Col sm={{ offset: 8 }}>
+						<Col sm={{ offset: 8, sm: 2 }}>
 							<div align="right">
 								<Button variant="primary" onClick={() => this.setState({ veiculo: this.emptyVeiculo, change: true })}>Cadastrar</Button>
 							</div>

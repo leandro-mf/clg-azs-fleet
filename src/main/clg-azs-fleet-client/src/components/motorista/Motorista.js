@@ -146,10 +146,10 @@ class Motorista extends Component {
 						</Col>
 					</Row>
 					<Row>
-						<Col>
+						<Col sm={2}>
 							<input type="text" name="search" placeholder="CPF ou nome" onChange={this.search} />
 						</Col>
-						<Col sm={{ offset: 8 }}>
+						<Col sm={{ offset: 8, sm: 2 }}>
 							<div align="right">
 								<Button variant="primary" onClick={() => this.setState({ motorista: this.emptyMotorista, change: true })}>Cadastrar</Button>
 							</div>
