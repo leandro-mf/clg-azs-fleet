@@ -44,7 +44,7 @@ public class Veiculo {
 	private LocalDate anoFabricacao;
 
 	public Veiculo() {
-
+		super();
 	}
 
 	public Long getId() {

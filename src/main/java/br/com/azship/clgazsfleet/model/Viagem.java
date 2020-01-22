@@ -4,6 +4,7 @@ import java.time.LocalDate;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -25,11 +26,11 @@ public class Viagem {
 	@Column(name = "id")
 	private Long id;
 	@ManyToOne
-	@JoinColumn(name = "veiculo_id")
+	@JoinColumn(name = "veiculo_id", foreignKey = @ForeignKey(name = "veiculo_fkey"))
 	@OnDelete(action = OnDeleteAction.CASCADE)
 	private Veiculo veiculo;
 	@ManyToOne
-	@JoinColumn(name = "motorista_id")
+	@JoinColumn(name = "motorista_id", foreignKey = @ForeignKey(name = "motorista_fkey"))
 	@OnDelete(action = OnDeleteAction.CASCADE)
 	private Motorista motorista;
 	@Column(name = "data_inicio", columnDefinition = "DATE")
@@ -44,7 +45,7 @@ public class Viagem {
 	private StatusViagem statusViagem;
 
 	public Viagem() {
-
+		super();
 	}
 
 	public Long getId() {

@@ -3,8 +3,6 @@ package br.com.azship.clgazsfleet.service;
 import java.time.LocalDate;
 import java.util.List;
 
-import br.com.azship.clgazsfleet.model.Motorista;
-import br.com.azship.clgazsfleet.model.Veiculo;
 import br.com.azship.clgazsfleet.model.Viagem;
 
 public interface ViagemService {
@@ -13,9 +11,9 @@ public interface ViagemService {
 	
 	Viagem findById(Long id);
 	
-	Viagem findByMotorista(Motorista motorista);
+	Viagem findByMotorista_id(Long id);
 	
-	Viagem findByVeiculo(Veiculo veiculo);
+	Viagem findByVeiculo_id(Long id);
 	
 	Viagem findByDataInicio(LocalDate dataInicio);
 	

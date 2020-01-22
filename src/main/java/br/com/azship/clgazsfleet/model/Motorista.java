@@ -37,7 +37,7 @@ public class Motorista {
 	private LocalDate validadeCnh;
 
 	public Motorista() {
-
+		super();
 	}
 
 	public Long getId() {

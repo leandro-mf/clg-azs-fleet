@@ -8,6 +8,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
@@ -30,6 +32,8 @@ import br.com.azship.clgazsfleet.repository.ViagemRepository;
 @Component
 public class BootStrapData implements CommandLineRunner {
 
+	private static final Logger LOGGER = LoggerFactory.getLogger(BootStrapData.class);
+	
 	private MotoristaRepository motoristaRepository;
 	private VeiculoRepository<Veiculo> veiculoRepository;
 	private CavaloRepository cavaloRepository;
@@ -47,10 +51,10 @@ public class BootStrapData implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) throws Exception {
-		System.out.println("Carregando dados...");
+		LOGGER.info("Carregando dados...");
 
-		List<Motorista> motoristas = new ArrayList<Motorista>();
-		List<Viagem> viagens = new ArrayList<Viagem>();
+		List<Motorista> motoristas = new ArrayList<>();
+		List<Viagem> viagens = new ArrayList<>();
 
 		for (int i = 0; i < 10; i++) {
 			Motorista motorista = new Motorista();
@@ -123,9 +127,9 @@ public class BootStrapData implements CommandLineRunner {
 		motoristaRepository.saveAll(motoristas);
 		viagemRepository.saveAll(viagens);
 
-		System.out.println("Motoristas carregados: " + motoristaRepository.count());
-		System.out.println("Veiculos carregados: " + veiculoRepository.count());
-		System.out.println("Viagens carregadas: " + viagemRepository.count());
+		LOGGER.info("Motoristas carregados: {}", motoristaRepository.count());
+		LOGGER.info("Veiculos carregados: {}", veiculoRepository.count());
+		LOGGER.info("Viagens carregadas: {}", viagemRepository.count());
 	}
 
 }

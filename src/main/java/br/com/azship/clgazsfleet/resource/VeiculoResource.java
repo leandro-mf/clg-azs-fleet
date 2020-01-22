@@ -4,6 +4,8 @@ import java.net.URI;
 import java.util.List;
 import java.util.NoSuchElementException;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
@@ -28,6 +30,8 @@ public class VeiculoResource<T extends Veiculo> {
 
 	public static final String BASE_URL = "/api/v1/veiculos";
 
+	private static final Logger LOGGER = LoggerFactory.getLogger(VeiculoResource.class);
+	
 	private final VeiculoService<T> veiculoService;
 
 	public VeiculoResource(VeiculoService<T> veiculoService) {
@@ -36,11 +40,13 @@ public class VeiculoResource<T extends Veiculo> {
 
 	@GetMapping
 	public ResponseEntity<List<T>> get() {
+		LOGGER.info(">>> GET recebido em {} <<<", BASE_URL);
 		return ResponseEntity.ok().body(veiculoService.findAll());
 	}
 
 	@GetMapping("{id}")
 	public ResponseEntity<T> get(@PathVariable("id") Long id) {
+		LOGGER.info(">>> GET recebido em {}/{} <<<", BASE_URL, id);
 		try {
 			return ResponseEntity.ok().body(veiculoService.findById(id));
 		} catch (NoSuchElementException e) {
@@ -50,6 +56,7 @@ public class VeiculoResource<T extends Veiculo> {
 
 	@PostMapping
 	public ResponseEntity<T> post(@RequestBody T veiculo) {
+		LOGGER.info(">>> POST recebido em {} <<<", BASE_URL);
 		T savedVeiculo = veiculoService.save(veiculo);
 		StringBuilder sb = new StringBuilder();
 		sb.append(BASE_URL).append("/").append(savedVeiculo.getId());
@@ -58,12 +65,14 @@ public class VeiculoResource<T extends Veiculo> {
 
 	@PutMapping("{id}")
 	public ResponseEntity<T> put(@PathVariable("id") Long id, @RequestBody T veiculo) {
+		LOGGER.info(">>> PUT recebido em {}/{} <<<", BASE_URL, id);
 		veiculo.setId(id);
 		return ResponseEntity.ok().body(veiculoService.update(veiculo));
 	}
 
 	@DeleteMapping("{id}")
 	public ResponseEntity<Void> delete(@PathVariable("id") Long id) {
+		LOGGER.info(">>> DELETE recebido em {}/{} <<<", BASE_URL, id);
 		try {
 			veiculoService.delete(id);
 			return ResponseEntity.noContent().build();

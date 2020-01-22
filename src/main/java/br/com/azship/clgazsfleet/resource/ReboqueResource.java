@@ -13,7 +13,7 @@ import br.com.azship.clgazsfleet.service.VeiculoService;
 public class ReboqueResource extends VeiculoResource<Reboque>{
 
 	public static final String BASE_URL = "/api/v1/reboques";
-
+	
 	public ReboqueResource(VeiculoService<Reboque> veiculoService) {
 		super(veiculoService);
 	}
