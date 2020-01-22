@@ -25,7 +25,8 @@ class Veiculo extends Component {
 		fabricante: '',
 		modelo: '',
 		anoFabricacao: '',
-		tipoVeiculo: ''
+		tipoCavalo: '',
+		tipoReboque: ''
 	}
 
 	constructor(props) {
@@ -35,7 +36,8 @@ class Veiculo extends Component {
 			change: false,
 			veiculos: [],
 			filteredVeiculos: [],
-			veiculo: this.emptyVeiculo
+			veiculo: this.emptyVeiculo,
+			categoriaVeiculo: 0
 		}
 		this.handleChange = this.handleChange.bind(this);
 		this.handleSubmit = this.handleSubmit.bind(this);
@@ -108,15 +110,19 @@ class Veiculo extends Component {
 	}
 
 	change(veiculo) {
-		this.setState({ change: true, veiculo: veiculo });
+		let categoria;
+		if (veiculo.tipoCavalo) categoria = "1";
+		else if (veiculo.tipoReboque) categoria = "2";
+		else categoria = "0";
+		this.setState({ change: true, veiculo: veiculo, categoriaVeiculo: categoria });
 	}
 
 	render() {
-		const { isLoading, change, veiculo, filteredVeiculos } = this.state;
+		const { isLoading, change, categoriaVeiculo, veiculo, filteredVeiculos } = this.state;
 		const title = <h3 style={{ fontWeight: "bold" }}>Veículos</h3>
 
 		if (isLoading) return (<div><Alert variant="primary">Carregando...</Alert></div>);
-		if (change) return (<Redirect to={{ pathname: "/veiculos/cadastrar", state: veiculo }} />);
+		if (change) return (<Redirect to={{ pathname: "/veiculos/cadastrar", state: {veiculo: veiculo, categoriaVeiculo: categoriaVeiculo} }} />);
 
 		let rows = filteredVeiculos.sort((v1, v2) => v1.id - v2.id).map((veiculo) => (
 			<tr key={veiculo.id}>
@@ -129,7 +135,23 @@ class Veiculo extends Component {
 				<td>{veiculo.fabricante}</td>
 				<td>{veiculo.modelo}</td>
 				<td><Moment date={veiculo.anoFabricacao} format="DD/MM/YYYY" /></td>
-				<td>{veiculo.tipoVeiculo}</td>
+				{ veiculo.tipoCavalo ?	
+					<>
+					<td>Cavalo</td>
+					<td>{veiculo.tipoCavalo}</td>
+					</>
+					: 
+					veiculo.tipoReboque ? 
+						<>
+						<td>Reboque</td>
+						<td>{veiculo.tipoReboque}</td>
+						</> 
+						:
+						<>
+						<td>Truck/Bitruck</td>
+						<td>-</td>
+						</>
+				}
 				<td><Button variant="warning" onClick={() => this.change(veiculo)}>Alterar</Button></td>
 				<td><Button variant="danger" onClick={() => this.delete(veiculo.id)}>Excluir</Button></td>
 			</tr>
@@ -169,6 +191,7 @@ class Veiculo extends Component {
 								<th>Fabricante</th>
 								<th>Modelo</th>
 								<th>Ano Fabricação</th>
+								<th>Categoria</th>
 								<th>Tipo</th>
 								<th colSpan="2"></th>
 							</tr>

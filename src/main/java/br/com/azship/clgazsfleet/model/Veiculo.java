@@ -2,15 +2,23 @@ package br.com.azship.clgazsfleet.model;
 
 import java.time.LocalDate;
 import javax.persistence.Column;
+import javax.persistence.DiscriminatorColumn;
+import javax.persistence.DiscriminatorType;
+import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 @Entity
 @Table(name = "veiculo")
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "categoria_veiculo", discriminatorType = DiscriminatorType.INTEGER)
+@DiscriminatorValue("0")
 @SequenceGenerator(name = "veiculo_id_gen", sequenceName = "veiculo_id_seq", initialValue = 1, allocationSize = 1)
 public class Veiculo {
 
@@ -34,8 +42,6 @@ public class Veiculo {
 	private String modelo;
 	@Column(name = "ano_fabricacao", columnDefinition = "DATE")
 	private LocalDate anoFabricacao;
-	@Column(name = "tipo_veiculo")
-	private TipoVeiculo tipoVeiculo;
 
 	public Veiculo() {
 
@@ -113,14 +119,6 @@ public class Veiculo {
 		this.anoFabricacao = anoFabricacao;
 	}
 
-	public TipoVeiculo getTipoVeiculo() {
-		return tipoVeiculo;
-	}
-
-	public void setTipoVeiculo(TipoVeiculo tipoVeiculo) {
-		this.tipoVeiculo = tipoVeiculo;
-	}
-
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
@@ -142,8 +140,6 @@ public class Veiculo {
 		builder.append(modelo);
 		builder.append(", anoFabricacao=");
 		builder.append(anoFabricacao);
-		builder.append(", tipoVeiculo=");
-		builder.append(tipoVeiculo);
 		builder.append("]");
 		return builder.toString();
 	}

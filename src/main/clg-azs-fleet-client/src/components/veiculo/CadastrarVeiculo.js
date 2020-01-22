@@ -9,7 +9,9 @@ import Alert from 'react-bootstrap/Alert';
 
 import { Redirect } from 'react-router-dom';
 
-const endpoint = "/api/v1/veiculos";
+const veiculosEndpoint = "/api/v1/veiculos";
+const cavalosEndpoint = "/api/v1/cavalos";
+const reboquesEndpoint = "/api/v1/reboques";
 
 class CadastrarVeiculo extends Component {
 
@@ -23,7 +25,8 @@ class CadastrarVeiculo extends Component {
 		fabricante: '',
 		modelo: '',
 		anoFabricacao: '',
-		tipoVeiculo: ''
+		tipoCavalo: '',
+		tipoReboque: ''
 	}
 
 	constructor(props) {
@@ -31,6 +34,7 @@ class CadastrarVeiculo extends Component {
 		this.state = {
 			isLoading: true,
 			redirect: false,
+			categoriaVeiculo: 0,
 			veiculo: this.emptyVeiculo
 		}
 		this.inputRef = React.createRef();
@@ -39,7 +43,10 @@ class CadastrarVeiculo extends Component {
 	}
 
 	componentDidMount() {
-		if (this.props.location.state) this.setState({ veiculo: this.props.location.state });
+		if (this.props.location.state) this.setState(
+			{ veiculo: this.props.location.state.veiculo, 
+				categoriaVeiculo: this.props.location.state.categoriaVeiculo 
+			});
 		this.setState({ isLoading: false });
 	}
 
@@ -47,15 +54,29 @@ class CadastrarVeiculo extends Component {
 		const target = event.target;
 		const value = target.value;
 		const name = target.name;
-		let veiculo = { ...this.state.veiculo };
-		veiculo[name] = value;
-		this.setState({ veiculo: veiculo });
+		if (name === "categoriaVeiculo") this.setState({ categoriaVeiculo: value });
+		else {
+			let veiculo = { ...this.state.veiculo };
+			veiculo[name] = value;
+			this.setState({ veiculo: veiculo });
+		}
 	}
 
 	async handleSubmit(event) {
 		event.preventDefault();
-		const veiculo = this.state.veiculo;
-		await fetch(endpoint + (veiculo.id ? `/${veiculo.id}` : ''), {
+		const { categoriaVeiculo, veiculo } = this.state;
+		let path;
+		switch (categoriaVeiculo) {
+			case "1":
+				path = cavalosEndpoint;
+				break;
+			case "2":
+				path = reboquesEndpoint;
+				break;
+			default:
+				path = veiculosEndpoint;
+		}
+		await fetch(path + (veiculo.id ? `/${veiculo.id}` : ''), {
 			method: (veiculo.id ? 'PUT' : 'POST'),
 			headers: {
 				'Accept': 'application/json',
@@ -71,14 +92,14 @@ class CadastrarVeiculo extends Component {
 	}
 
 	render() {
-		const { isLoading, redirect, veiculo } = this.state;
-		const text = veiculo.id ? "Alterar Veículo": "Cadastrar Veículo";
+		const { isLoading, redirect, veiculo, categoriaVeiculo } = this.state;
+		const text = veiculo.id ? "Alterar Veículo" : "Cadastrar Veículo";
 		const title = <h3 style={{ fontWeight: "bold" }}>{text}</h3>;
 
 		if (isLoading) return (<div><Alert variant="primary">Carregando...</Alert></div>);
 		if (redirect) return <Redirect to="/veiculos" />
 
-		return(
+		return (
 			<div>
 				<Container>
 					{title}<br />
@@ -131,21 +152,45 @@ class CadastrarVeiculo extends Component {
 								<Form.Control as="input" type="date" name="anoFabricacao" value={veiculo.anoFabricacao} required onChange={this.handleChange} />
 							</Col>
 						</Form.Group>
-						<Form.Group as={Row} controlId="tipoVeiculo">
-							<Form.Label column sm={2}>Tipo de Veículo</Form.Label>
-							<Col sm={10}>
-								<Form.Control as="select" name="tipoVeiculo" value={veiculo.tipoVeiculo} required onChange={this.handleChange}>
-									<option></option>
-									<option>TRUCADO</option>
-									<option>SIMPLES</option>
-									<option>BAU</option>
-									<option>SIDER</option>
-									<option>GRADE_BAIXA</option>
-									<option>BAU_FRIGORIFICO</option>
-									<option>TANQUE</option>
-								</Form.Control>
+						<Form.Group as={Row} controlId="categoriaVeiculo">
+							<Form.Label column sm={2}>Categoria</Form.Label>
+							<Col sm={1}>
+								<Form.Check type="radio" label="Truck/Bitruck" name="categoriaVeiculo" value="0" checked={categoriaVeiculo === "0"} disabled={veiculo.id} onChange={this.handleChange} />
+								<Form.Check type="radio" label="Cavalo" name="categoriaVeiculo" value="1" checked={categoriaVeiculo === "1"} disabled={veiculo.id} onChange={this.handleChange} />
+								<Form.Check type="radio" label="Reboque" name="categoriaVeiculo" value="2" checked={categoriaVeiculo === "2"} disabled={veiculo.id} onChange={this.handleChange} />
 							</Col>
 						</Form.Group>
+						{
+							categoriaVeiculo === "1" ?
+								<Form.Group as={Row} controlId="tipoCavalo">
+									<Form.Label column sm={2}>Tipo de Cavalo</Form.Label>
+									<Col sm={10}>
+										<Form.Control as="select" name="tipoCavalo" value={veiculo.tipoCavalo} required disabled={veiculo.id} onChange={this.handleChange}>
+											<option></option>
+											<option>TRUCADO</option>
+											<option>SIMPLES</option>
+										</Form.Control>
+									</Col>
+								</Form.Group>
+								: <></>
+						}
+						{
+							categoriaVeiculo === "2" ?
+								<Form.Group as={Row} controlId="tipoReboque">
+									<Form.Label column sm={2}>Tipo de Reboque</Form.Label>
+									<Col sm={10}>
+										<Form.Control as="select" name="tipoReboque" value={veiculo.tipoReboque} required disabled={veiculo.id} onChange={this.handleChange}>
+											<option></option>
+											<option>BAU</option>
+											<option>SIDER</option>
+											<option>GRADE_BAIXA</option>
+											<option>BAU_FRIGORIFICO</option>
+											<option>TANQUE</option>
+										</Form.Control>
+									</Col>
+								</Form.Group>
+								: <></>
+						}
 						<Form.Group as={Row}>
 							<Col sm={{ offset: 8 }}>
 								<div align="right">

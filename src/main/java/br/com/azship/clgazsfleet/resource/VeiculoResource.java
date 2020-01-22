@@ -24,23 +24,23 @@ import br.com.azship.clgazsfleet.service.VeiculoService;
 @RestController
 @RequestMapping(VeiculoResource.BASE_URL)
 @CrossOrigin(origins = "*")
-public class VeiculoResource {
+public class VeiculoResource<T extends Veiculo> {
 
 	public static final String BASE_URL = "/api/v1/veiculos";
 
-	private final VeiculoService veiculoService;
+	private final VeiculoService<T> veiculoService;
 
-	public VeiculoResource(VeiculoService veiculoService) {
+	public VeiculoResource(VeiculoService<T> veiculoService) {
 		this.veiculoService = veiculoService;
 	}
 
 	@GetMapping
-	public ResponseEntity<List<Veiculo>> get() {
+	public ResponseEntity<List<T>> get() {
 		return ResponseEntity.ok().body(veiculoService.findAll());
 	}
 
 	@GetMapping("{id}")
-	public ResponseEntity<Veiculo> get(@PathVariable("id") Long id) {
+	public ResponseEntity<T> get(@PathVariable("id") Long id) {
 		try {
 			return ResponseEntity.ok().body(veiculoService.findById(id));
 		} catch (NoSuchElementException e) {
@@ -49,15 +49,15 @@ public class VeiculoResource {
 	}
 
 	@PostMapping
-	public ResponseEntity<Veiculo> post(@RequestBody Veiculo veiculo) {
-		Veiculo savedVeiculo = veiculoService.save(veiculo);
+	public ResponseEntity<T> post(@RequestBody T veiculo) {
+		T savedVeiculo = veiculoService.save(veiculo);
 		StringBuilder sb = new StringBuilder();
 		sb.append(BASE_URL).append("/").append(savedVeiculo.getId());
 		return ResponseEntity.created(URI.create(sb.toString())).body(savedVeiculo);
 	}
 
 	@PutMapping("{id}")
-	public ResponseEntity<Veiculo> put(@PathVariable("id") Long id, @RequestBody Veiculo veiculo) {
+	public ResponseEntity<T> put(@PathVariable("id") Long id, @RequestBody T veiculo) {
 		veiculo.setId(id);
 		return ResponseEntity.ok().body(veiculoService.update(veiculo));
 	}

@@ -12,13 +12,18 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
 import br.com.azship.clgazsfleet.model.CategoriaCnh;
+import br.com.azship.clgazsfleet.model.Cavalo;
 import br.com.azship.clgazsfleet.model.Motorista;
+import br.com.azship.clgazsfleet.model.Reboque;
 import br.com.azship.clgazsfleet.model.Sexo;
 import br.com.azship.clgazsfleet.model.StatusViagem;
-import br.com.azship.clgazsfleet.model.TipoVeiculo;
+import br.com.azship.clgazsfleet.model.TipoCavalo;
+import br.com.azship.clgazsfleet.model.TipoReboque;
 import br.com.azship.clgazsfleet.model.Veiculo;
 import br.com.azship.clgazsfleet.model.Viagem;
+import br.com.azship.clgazsfleet.repository.CavaloRepository;
 import br.com.azship.clgazsfleet.repository.MotoristaRepository;
+import br.com.azship.clgazsfleet.repository.ReboqueRepository;
 import br.com.azship.clgazsfleet.repository.VeiculoRepository;
 import br.com.azship.clgazsfleet.repository.ViagemRepository;
 
@@ -26,13 +31,17 @@ import br.com.azship.clgazsfleet.repository.ViagemRepository;
 public class BootStrapData implements CommandLineRunner {
 
 	private MotoristaRepository motoristaRepository;
-	private VeiculoRepository veiculoRepository;
+	private VeiculoRepository<Veiculo> veiculoRepository;
+	private CavaloRepository cavaloRepository;
+	private ReboqueRepository reboqueRepository;
 	private ViagemRepository viagemRepository;
 
-	public BootStrapData(MotoristaRepository motoristaRepository, VeiculoRepository veiculoRepository,
-			ViagemRepository viagemRepository) {
+	public BootStrapData(MotoristaRepository motoristaRepository, VeiculoRepository<Veiculo> veiculoRepository,
+			CavaloRepository cavaloRepository, ReboqueRepository reboqueRepository, ViagemRepository viagemRepository) {
 		this.motoristaRepository = motoristaRepository;
 		this.veiculoRepository = veiculoRepository;
+		this.cavaloRepository = cavaloRepository;
+		this.reboqueRepository = reboqueRepository;
 		this.viagemRepository = viagemRepository;
 	}
 
@@ -41,12 +50,10 @@ public class BootStrapData implements CommandLineRunner {
 		System.out.println("Carregando dados...");
 
 		List<Motorista> motoristas = new ArrayList<Motorista>();
-		List<Veiculo> veiculos = new ArrayList<Veiculo>();
 		List<Viagem> viagens = new ArrayList<Viagem>();
 
 		for (int i = 0; i < 10; i++) {
 			Motorista motorista = new Motorista();
-			Veiculo veiculo = new Veiculo();
 			Viagem viagem = new Viagem();
 
 			String iString = String.valueOf(i);
@@ -62,19 +69,46 @@ public class BootStrapData implements CommandLineRunner {
 
 			motoristas.add(motorista);
 
-			veiculo.setPlaca("AAA" + String.join("", Collections.nCopies(4, iString)));
-			veiculo.setCidade("Uberlandia");
-			veiculo.setEstado("MG");
-			veiculo.setRenavam("Renavam " + (i + 1));
-			veiculo.setChassi("Chassi " + (i + 1));
-			veiculo.setFabricante("Fabricante " + (i + 1));
-			veiculo.setModelo("Modelo " + (i + 1));
-			veiculo.setAnoFabricacao(LocalDate.of(2000, 1, i + 1));
-			veiculo.setTipoVeiculo(TipoVeiculo.getInstance(new Random().nextInt(7)));
+			if (i < 3) {
+				Veiculo veiculo = new Veiculo();
+				veiculo.setPlaca("AAA" + String.join("", Collections.nCopies(4, iString)));
+				veiculo.setCidade("Uberlandia");
+				veiculo.setEstado("MG");
+				veiculo.setRenavam("Renavam " + (i + 1));
+				veiculo.setChassi("Chassi " + (i + 1));
+				veiculo.setFabricante("Fabricante " + (i + 1));
+				veiculo.setModelo("Modelo " + (i + 1));
+				veiculo.setAnoFabricacao(LocalDate.of(2000, 1, i + 1));
+				viagem.setVeiculo(veiculo);
+				veiculoRepository.save(veiculo);
+			} else if (i < 6) {
+				Cavalo cavalo = new Cavalo();
+				cavalo.setPlaca("AAA" + String.join("", Collections.nCopies(4, iString)));
+				cavalo.setCidade("Uberlandia");
+				cavalo.setEstado("MG");
+				cavalo.setRenavam("Renavam " + (i + 1));
+				cavalo.setChassi("Chassi " + (i + 1));
+				cavalo.setFabricante("Fabricante " + (i + 1));
+				cavalo.setModelo("Modelo " + (i + 1));
+				cavalo.setAnoFabricacao(LocalDate.of(2000, 1, i + 1));
+				cavalo.setTipoCavalo(TipoCavalo.getInstance(new Random().nextInt(2)));
+				viagem.setVeiculo(cavalo);
+				cavaloRepository.save(cavalo);
+			} else if (i < 10) {
+				Reboque reboque = new Reboque();
+				reboque.setPlaca("AAA" + String.join("", Collections.nCopies(4, iString)));
+				reboque.setCidade("Uberlandia");
+				reboque.setEstado("MG");
+				reboque.setRenavam("Renavam " + (i + 1));
+				reboque.setChassi("Chassi " + (i + 1));
+				reboque.setFabricante("Fabricante " + (i + 1));
+				reboque.setModelo("Modelo " + (i + 1));
+				reboque.setAnoFabricacao(LocalDate.of(2000, 1, i + 1));
+				reboque.setTipoReboque(TipoReboque.getInstance(new Random().nextInt(6)));
+				viagem.setVeiculo(reboque);
+				reboqueRepository.save(reboque);
+			}
 
-			veiculos.add(veiculo);
-
-			viagem.setVeiculo(veiculo);
 			viagem.setMotorista(motorista);
 			viagem.setDataInicio(LocalDate.of(2020, i + 1, i + 1));
 			viagem.setDataFim(LocalDate.of(2020, i + 1, i + 1));
@@ -87,7 +121,6 @@ public class BootStrapData implements CommandLineRunner {
 		}
 
 		motoristaRepository.saveAll(motoristas);
-		veiculoRepository.saveAll(veiculos);
 		viagemRepository.saveAll(viagens);
 
 		System.out.println("Motoristas carregados: " + motoristaRepository.count());

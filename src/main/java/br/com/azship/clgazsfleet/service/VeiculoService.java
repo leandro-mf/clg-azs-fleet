@@ -4,17 +4,17 @@ import java.util.List;
 
 import br.com.azship.clgazsfleet.model.Veiculo;
 
-public interface VeiculoService {
+public interface VeiculoService<T extends Veiculo> {
 	
-	List<Veiculo> findAll();
+	List<T> findAll();
 	
-	Veiculo findById(Long id);
+	T findById(Long id);
 	
-	Veiculo findByPlaca(String placa);
+	T findByPlaca(String placa);
 	
-	Veiculo save(Veiculo veiculo);
+	T save(T veiculo);
 		
-	Veiculo update(Veiculo veiculo);
+	T update(T veiculo);
 	
 	void delete(Long id);
 

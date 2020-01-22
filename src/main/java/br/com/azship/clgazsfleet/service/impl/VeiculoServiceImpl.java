@@ -2,6 +2,7 @@ package br.com.azship.clgazsfleet.service.impl;
 
 import java.util.List;
 
+import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 
 import br.com.azship.clgazsfleet.model.Veiculo;
@@ -9,11 +10,12 @@ import br.com.azship.clgazsfleet.repository.VeiculoRepository;
 import br.com.azship.clgazsfleet.service.VeiculoService;
 
 @Service
-public class VeiculoServiceImpl implements VeiculoService {
+@Primary
+public class VeiculoServiceImpl implements VeiculoService<Veiculo> {
 
-	private final VeiculoRepository veiculoRepository;
+	private final VeiculoRepository<Veiculo> veiculoRepository;
 
-	public VeiculoServiceImpl(VeiculoRepository veiculoRepository) {
+	public VeiculoServiceImpl(VeiculoRepository<Veiculo> veiculoRepository) {
 		this.veiculoRepository = veiculoRepository;
 	}
 
