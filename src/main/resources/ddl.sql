@@ -1,73 +1,87 @@
-CREATE TABLE public.motorista
-(
-  id bigint NOT NULL,
-  categoria_cnh integer,
-  cpf character varying(255),
-  data_nascimento date,
-  expedicao_cnh date,
-  nome character varying(255),
-  numero_cnh character varying(255),
-  sexo integer,
-  validade_cnh date,
-  CONSTRAINT motorista_pkey PRIMARY KEY (id)
-);
+CREATE DATABASE clg_azs_fleet
+	WITH OWNER = azs
+    ENCODING = 'UTF8'
+    TABLESPACE = pg_default
+    LC_COLLATE = 'en_US.UTF-8'
+    LC_CTYPE = 'en_US.UTF-8'
+    CONNECTION LIMIT = -1;
 
-CREATE TABLE public.veiculo
-(
-  categoria_veiculo integer NOT NULL,
-  id bigint NOT NULL,
-  ano_fabricacao date,
-  chassi character varying(255),
-  cidade character varying(255),
-  estado character varying(255),
-  fabricante character varying(255),
-  modelo character varying(255),
-  placa character varying(255),
-  renavam character varying(255),
-  tipo_cavalo integer,
-  tipo_reboque integer,
-  CONSTRAINT veiculo_pkey PRIMARY KEY (id)
-);
 
-CREATE TABLE public.viagem
-(
-  id bigint NOT NULL,
-  data_fim date,
-  data_inicio date,
-  produto_transportado character varying(255),
-  status_viagem integer,
-  valor_frete double precision,
-  motorista_id bigint,
-  veiculo_id bigint,
-  CONSTRAINT viagem_pkey PRIMARY KEY (id),
-  CONSTRAINT veiculo_fkey FOREIGN KEY (veiculo_id)
-      REFERENCES public.veiculo (id) MATCH SIMPLE
-      ON UPDATE NO ACTION ON DELETE CASCADE,
-  CONSTRAINT motorista_fkey FOREIGN KEY (motorista_id)
-      REFERENCES public.motorista (id) MATCH SIMPLE
-      ON UPDATE NO ACTION ON DELETE CASCADE
+CREATE TABLE public.motorista (
+    id bigint NOT NULL,
+    categoria_cnh integer,
+    cpf character varying(255),
+    data_nascimento date,
+    expedicao_cnh date,
+    nome character varying(255),
+    numero_cnh character varying(255),
+    sexo integer,
+    validade_cnh date
 );
+ALTER TABLE public.motorista OWNER TO azs;
+ALTER TABLE ONLY public.motorista
+    ADD CONSTRAINT motorista_pkey PRIMARY KEY (id);
+
+CREATE TABLE public.veiculo (
+    categoria_veiculo integer NOT NULL,
+    id bigint NOT NULL,
+    ano_fabricacao date,
+    chassi character varying(255),
+    cidade character varying(255),
+    estado character varying(255),
+    fabricante character varying(255),
+    modelo character varying(255),
+    placa character varying(255),
+    renavam character varying(255),
+    tipo_cavalo integer,
+    tipo_reboque integer
+);
+ALTER TABLE public.veiculo OWNER TO azs;
+ALTER TABLE ONLY public.veiculo
+    ADD CONSTRAINT veiculo_pkey PRIMARY KEY (id);
+
+CREATE TABLE public.viagem (
+    id bigint NOT NULL,
+    data_fim date,
+    data_inicio date,
+    produto_transportado character varying(255),
+    status_viagem integer,
+    valor_frete double precision,
+    motorista_id bigint,
+    veiculo_id bigint
+);
+ALTER TABLE public.viagem OWNER TO azs;
+ALTER TABLE ONLY public.viagem
+    ADD CONSTRAINT viagem_pkey PRIMARY KEY (id);
+ALTER TABLE ONLY public.viagem
+    ADD CONSTRAINT motorista_fkey FOREIGN KEY (motorista_id) REFERENCES public.motorista(id) ON DELETE CASCADE;
+ALTER TABLE ONLY public.viagem
+    ADD CONSTRAINT veiculo_fkey FOREIGN KEY (veiculo_id) REFERENCES public.veiculo(id) ON DELETE CASCADE;
+
 
 CREATE SEQUENCE public.motorista_id_seq
-  INCREMENT 1
-  MINVALUE 1
-  MAXVALUE 9223372036854775807
-  START 10
-  CACHE 1;
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+ALTER TABLE public.motorista_id_seq OWNER TO azs;
 
 CREATE SEQUENCE public.veiculo_id_seq
-  INCREMENT 1
-  MINVALUE 1
-  MAXVALUE 9223372036854775807
-  START 10
-  CACHE 1;
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+ALTER TABLE public.veiculo_id_seq OWNER TO azs;
 
 CREATE SEQUENCE public.viagem_id_seq
-  INCREMENT 1
-  MINVALUE 1
-  MAXVALUE 9223372036854775807
-  START 10
-  CACHE 1;
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+ALTER TABLE public.viagem_id_seq OWNER TO azs;
   
 
 INSERT INTO public.motorista(id, categoria_cnh, cpf, data_nascimento, expedicao_cnh, nome, 
