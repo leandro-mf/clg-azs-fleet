@@ -77,13 +77,17 @@ class CadastrarViagem extends Component {
 			const status = response.status;
 			if (status === 200 || status === 201) {
 				this.setState({ redirect: true });
+			} else if (status === 403) {
+				alert('Você não possui permissão para realizar esta ação!')	
+			} else {
+				alert('Erro ao cadastrar viagem!');
 			}
 		});
 	}
 
 	render() {
 		const { isLoading, redirect, motoristas, veiculos, viagem } = this.state;
-		const text = viagem.id ? "Alterar Viagem": "Cadastrar Viagem";
+		const text = viagem.id ? "Alterar Viagem" : "Cadastrar Viagem";
 		const title = <h3 style={{ fontWeight: "bold" }}>{text}</h3>;
 
 		if (isLoading) return (<div><Alert variant="primary">Carregando...</Alert></div>);
@@ -148,7 +152,7 @@ class CadastrarViagem extends Component {
 							<Col sm={{ offset: 8 }}>
 								<div align="right">
 									<Button variant="primary" type="submit">Salvar</Button>{' '}
-									<Button variant="secondary" type="reset" onClick={() => this.setState({ viagem: this.emptyViagem, redirect: true})}>Cancelar</Button>
+									<Button variant="secondary" type="reset" onClick={() => this.setState({ viagem: this.emptyViagem, redirect: true })}>Cancelar</Button>
 								</div>
 							</Col>
 						</Form.Group>
@@ -158,5 +162,5 @@ class CadastrarViagem extends Component {
 		);
 	}
 }
-		
+
 export default CadastrarViagem;

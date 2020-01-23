@@ -44,8 +44,9 @@ class CadastrarVeiculo extends Component {
 
 	componentDidMount() {
 		if (this.props.location.state) this.setState(
-			{ veiculo: this.props.location.state.veiculo, 
-				categoriaVeiculo: this.props.location.state.categoriaVeiculo 
+			{
+				veiculo: this.props.location.state.veiculo,
+				categoriaVeiculo: this.props.location.state.categoriaVeiculo
 			});
 		this.setState({ isLoading: false });
 	}
@@ -87,6 +88,10 @@ class CadastrarVeiculo extends Component {
 			const status = response.status;
 			if (status === 200 || status === 201) {
 				this.setState({ redirect: true });
+			} else if (status === 403) {
+				alert('Você não possui permissão para realizar esta ação!')	
+			} else {
+				alert('Erro ao cadastrar veiculo!');
 			}
 		});
 	}

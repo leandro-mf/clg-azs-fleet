@@ -122,6 +122,8 @@ class Viagem extends Component {
 					return (v.id === body.id) ? body : v;
 				});
 				this.setState({ viagens: updatedViagens, viagem: this.emptyViagem });
+			} else if (response.status === 403) {
+				alert('Você não possui permissão para realizar esta ação!')	
 			} else if (response.status === 500) {
 				alert('Erro ao iniciar viagem!');
 			}

@@ -65,13 +65,17 @@ class CadastrarMotorista extends Component {
 			const status = response.status;
 			if (status === 200 || status === 201) {
 				this.setState({ redirect: true });
+			} else if (status === 403) {
+				alert('Você não possui permissão para realizar esta ação!')
+			} else {
+				alert('Erro ao cadastrar motorista!');
 			}
 		});
 	}
 
 	render() {
 		const { isLoading, redirect, motorista } = this.state;
-		const text = motorista.id ? "Alterar Motorista": "Cadastrar Motorista";
+		const text = motorista.id ? "Alterar Motorista" : "Cadastrar Motorista";
 		const title = <h3 style={{ fontWeight: "bold" }}>{text}</h3>;
 
 		if (isLoading) return (<div><Alert variant="primary">Carregando...</Alert></div>);

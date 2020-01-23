@@ -21,6 +21,7 @@
 		<java.version>1.8</java.version>
 		<smartunit.version>0.10.2</smartunit.version>
 		<jacoco-maven-plugin.version>0.8.3</jacoco-maven-plugin.version>
+		<guava.version>28.1-jre</guava.version>
 	</properties>
 
 	<dependencies>
@@ -35,6 +36,15 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-security</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.google.guava</groupId>
+			<artifactId>guava</artifactId>
+			<version>${guava.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.postgresql</groupId>
@@ -84,10 +94,10 @@
 				<executions>
 					<execution>
 						<id>Install node and npm</id>
+						<phase>generate-resources</phase>
 						<goals>
 							<goal>install-node-and-npm</goal>
 						</goals>
-						<phase>generate-resources</phase>
 						<configuration>
 							<nodeVersion>v10.18.0</nodeVersion>
 							<npmVersion>6.13.4</npmVersion>
@@ -95,20 +105,20 @@
 					</execution>
 					<execution>
 						<id>Install npm dependencies</id>
+						<phase>generate-resources</phase>
 						<goals>
 							<goal>npm</goal>
 						</goals>
-						<phase>generate-resources</phase>
 						<configuration>
 							<arguments>install</arguments>
 						</configuration>
 					</execution>
 					<execution>
 						<id>Build react application</id>
+						<phase>generate-resources</phase>
 						<goals>
 							<goal>npm</goal>
 						</goals>
-						<phase>generate-resources</phase>
 						<configuration>
 							<arguments>run build</arguments>
 						</configuration>
