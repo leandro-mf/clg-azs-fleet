@@ -10,6 +10,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -24,6 +25,7 @@ import br.com.azship.clgazsfleet.service.VeiculoService;
 
 @RestController
 @RequestMapping(VeiculoResource.BASE_URL)
+@CrossOrigin(origins = "*")
 public class VeiculoResource<T extends Veiculo> {
 
 	public static final String BASE_URL = "/api/v1/veiculos";
