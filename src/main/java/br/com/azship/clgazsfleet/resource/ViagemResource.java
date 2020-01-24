@@ -8,7 +8,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -23,7 +22,6 @@ import br.com.azship.clgazsfleet.service.ViagemService;
 
 @RestController
 @RequestMapping(ViagemResource.BASE_URL)
-@CrossOrigin(origins = "*")
 public class ViagemResource {
 
 	public static final String BASE_URL = "/api/v1/viagens";
