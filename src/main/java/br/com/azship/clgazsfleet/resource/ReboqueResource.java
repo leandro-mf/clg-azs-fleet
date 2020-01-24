@@ -1,6 +1,5 @@
 package br.com.azship.clgazsfleet.resource;
 
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -9,7 +8,6 @@ import br.com.azship.clgazsfleet.service.VeiculoService;
 
 @RestController
 @RequestMapping(ReboqueResource.BASE_URL)
-@CrossOrigin(origins = "*")
 public class ReboqueResource extends VeiculoResource<Reboque>{
 
 	public static final String BASE_URL = "/api/v1/reboques";

@@ -90,6 +90,8 @@ class Veiculo extends Component {
 				let updatedVeiculos = [...this.state.veiculos].filter(i => i.id !== id);
 				let updatedFilteredVeiculos = [...this.state.filteredVeiculos].filter(i => i.id !== id);
 				this.setState({ veiculos: updatedVeiculos, filteredVeiculos: updatedFilteredVeiculos });
+			} else if (response.status === 403) {
+				alert('Você não possui permissão para realizar esta ação!')	
 			} else if (response.status === 500) {
 				alert('Erro ao excluir veículo!');
 			}

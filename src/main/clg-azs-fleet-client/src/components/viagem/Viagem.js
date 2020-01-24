@@ -100,6 +100,8 @@ class Viagem extends Component {
 				let updatedViagens = [...this.state.viagens].filter(i => i.id !== id);
 				let updatedFilteredViagens = [...this.state.filteredViagens].filter(i => i.id !== id);
 				this.setState({ viagens: updatedViagens, filteredViagens: updatedFilteredViagens });
+			} else if (response.status === 403) {
+				alert('Você não possui permissão para realizar esta ação!')	
 			} else if (response.status === 500) {
 				alert('Erro ao excluir viagem!');
 			}

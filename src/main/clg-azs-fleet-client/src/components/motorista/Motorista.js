@@ -87,6 +87,8 @@ class Motorista extends Component {
 				let updatedMotoristas = [...this.state.motoristas].filter(i => i.id !== id);
 				let updatedFilteredMotoristas = [...this.state.filteredMotoristas].filter(i => i.id !== id);
 				this.setState({ motoristas: updatedMotoristas, filteredMotoristas: updatedFilteredMotoristas });
+			} else if (response.status === 403) {
+				alert('Você não possui permissão para realizar esta ação!')	
 			} else if (response.status === 500) {
 				alert('Erro ao excluir motorista!');
 			}
